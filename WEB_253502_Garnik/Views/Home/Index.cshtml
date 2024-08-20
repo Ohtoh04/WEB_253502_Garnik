@@ -1,4 +1,5 @@
-﻿@{
+﻿@model SelectList
+@{
     ViewData["Title"] = "Index";
 }
 <!DOCTYPE html>
@@ -10,8 +11,17 @@
 </head>
 <body>
     <div class="container">
-        <h2> Hello world </h2>
+        <h1>@ViewData["Message"]</h1>
     </div>
+
+    <form asp-action="Index" method="post">
+        <div>
+            @Html.DropDownList("selectedItem", Model, "", new { @class = "form-control" })
+        </div>
+        <div>
+            <input type="submit" value="Отправить" />
+        </div>
+    </form>
     
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

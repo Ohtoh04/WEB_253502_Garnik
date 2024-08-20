@@ -4,6 +4,7 @@
 @{
     ViewData["Title"] = "Lab1";
 }
+@model List<string>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,8 +20,9 @@
         <h2> Список </h2>
     </div>
     <ol style="list-style-type: upper-alpha;">
-        <li>Элемент1</li>
-        <li>Элемент2</li>
+        @for (int i = 0; i < Model.Count; i++) {
+            <li>@Model[i]</li>
+        }
     </ol>
     <h2>Форма</h2>  
     <div class="container">
