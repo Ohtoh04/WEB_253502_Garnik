@@ -1,7 +1,11 @@
+using WEB_253502_Garnik.Extensions;
+using WEB_253502_Garnik.Services.CategoryService;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.RegisterCustomServices();
 
 var app = builder.Build();
 

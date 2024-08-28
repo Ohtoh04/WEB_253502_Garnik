@@ -4,8 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.10.35027.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WEB_253502_Garnik", "WEB_253502_Garnik\WEB_253502_Garnik.csproj", "{28F832E2-78F4-4920-B256-CBF01C2573F6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{691F6630-5ED1-4B2E-8E36-57DF616536AA} = {691F6630-5ED1-4B2E-8E36-57DF616536AA}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WEB.Domain", "WEB.Domain\WEB.Domain.csproj", "{691F6630-5ED1-4B2E-8E36-57DF616536AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WEB.Domain", "WEB.Domain\WEB.Domain.csproj", "{691F6630-5ED1-4B2E-8E36-57DF616536AA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
