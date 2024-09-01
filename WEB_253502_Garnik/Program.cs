@@ -1,11 +1,19 @@
 using WEB_253502_Garnik.Extensions;
 using WEB_253502_Garnik.Services.CategoryService;
+using WEB_253502_Garnik;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.RegisterCustomServices();
+
+// Получение конфигурации из appsettings.json
+var configuration = builder.Configuration;
+
+// Получение значения из раздела UriData
+var apiUri = configuration.GetSection("UriData:ApiUri").Value;
 
 var app = builder.Build();
 
