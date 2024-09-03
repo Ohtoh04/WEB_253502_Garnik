@@ -24,8 +24,4 @@
     <ProjectReference Include="..\WEB.Domain\WEB.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Areas\" />
-  </ItemGroup>
-
 </Project>
