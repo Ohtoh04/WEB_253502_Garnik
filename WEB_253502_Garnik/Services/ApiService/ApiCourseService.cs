@@ -2,21 +2,20 @@
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
-using WEB.Api.Data;
 using WEB.Domain.Entities;
 using WEB.Domain.Models;
 
 namespace WEB.Api.Services
 {
-    public class ApiProductService : IAPIProductService {
+    public class ApiCourseService : ICourseService {
         private readonly int _maxPageSize = 20;
         private HttpClient _httpClient;
         private string _pageSize;
         private JsonSerializerOptions _serializerOptions;
-        private ILogger<ApiProductService> _logger;
-        public ApiProductService(HttpClient httpClient,
+        private ILogger<ApiCourseService> _logger;
+        public ApiCourseService(HttpClient httpClient,
         IConfiguration configuration,
-        ILogger<ApiProductService> logger) {
+        ILogger<ApiCourseService> logger) {
             _httpClient = httpClient;
             _pageSize = configuration.GetSection("ItemsPerPage").Value;
             _serializerOptions = new JsonSerializerOptions() {
@@ -24,7 +23,7 @@ namespace WEB.Api.Services
             };
             _logger = logger;
         }
-        public async Task<ResponseData<Course>> CreateProductAsync(Course product) {
+        public async Task<ResponseData<Course>> CreateCourseAsync(Course product, IFormFile? formFile) {
             var uri = new Uri(_httpClient.BaseAddress.AbsoluteUri + "Courses");
             var response = await _httpClient.PostAsJsonAsync(uri, product, _serializerOptions);
             if (response.IsSuccessStatusCode) {
@@ -34,25 +33,25 @@ namespace WEB.Api.Services
             _logger.LogError($"-----> object not created. Error:{ response.StatusCode.ToString()}");
             return ResponseData<Course>.Error($"Объект не добавлен. Error:{response.StatusCode.ToString()}");
         }
-        public Task DeleteProductAsync(int id) {
+        public Task DeleteCourseAsync(int id) {
             throw new NotImplementedException();
         }
 
-        public Task<ResponseData<Course>> GetProductByIdAsync(int id) {
+        public Task<ResponseData<Course>> GetCourseByIdAsync(int id) {
             throw new NotImplementedException();
         }
 
-        public async Task<ResponseData<ListModel<Course>>> GetProductListAsync(
-        string? categoryNormalizedName, int pageNo = 1, int pageSize = 3) {
+        public async Task<ResponseData<ListModel<Course>>> GetCourseListAsync(
+        string? categoryNormalizedName, int pageNo = 1) {
             // подготовка URL запроса
-            var urlString = new StringBuilder($"{_httpClient.BaseAddress.AbsoluteUri}dishes/");
+            var urlString = new StringBuilder($"{_httpClient.BaseAddress.AbsoluteUri}Courses");
             // добавить категорию в маршрут
             if (categoryNormalizedName != null) {
-                urlString.Append($"{categoryNormalizedName}/");
+                urlString.Append($"/{categoryNormalizedName}");
             }
             // добавить номер страницы в маршрут
             if (pageNo > 1) {
-                urlString.Append($"page{pageNo}");
+                urlString.Append($"?pageNo={pageNo}");
             }
             // добавить размер страницы в строку запроса
             if (!_pageSize.Equals("3")) {
@@ -73,7 +72,7 @@ namespace WEB.Api.Services
         }
 
 
-        public Task UpdateProductAsync(int id, Course product) {
+        public Task UpdateCourseAsync(int id, Course product, IFormFile formFile) {
             throw new NotImplementedException();
         }
         public Task<ResponseData<string>> SaveImageAsync(int id, IFormFile formFile) {

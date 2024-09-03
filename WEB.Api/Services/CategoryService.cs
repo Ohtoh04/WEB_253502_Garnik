@@ -7,6 +7,10 @@ namespace WEB.Api.Services
 
     public class CategoryService : IAPICategoryService {
         private readonly AppDbContext _context;
+        public CategoryService(AppDbContext context)
+        {
+            _context = context;
+        }
         public async Task<ResponseData<List<Category>>> GetCategoryListAsync() {
             var data = _context.Categories;
             var dataList = new List<Category>();

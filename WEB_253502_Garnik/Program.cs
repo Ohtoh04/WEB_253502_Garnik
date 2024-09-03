@@ -13,7 +13,7 @@ builder.RegisterCustomServices();
 var configuration = builder.Configuration;
 
 // Получение значения из раздела UriData
-var apiUri = configuration.GetSection("UriData:ApiUri").Value;
+UriData.ApiUri = configuration.GetSection("UriData:ApiUri").Value;
 
 var app = builder.Build();
 

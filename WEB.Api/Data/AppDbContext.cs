@@ -5,6 +5,7 @@ using WEB.Domain.Entities;
 namespace WEB.Api.Data {
     public class AppDbContext : DbContext {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) {
+            //Database.EnsureDeleted();
             Database.EnsureCreated();
         }
         public DbSet<Course> Courses { get; set; } = null!;

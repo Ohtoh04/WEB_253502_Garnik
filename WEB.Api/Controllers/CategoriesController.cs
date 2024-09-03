@@ -11,6 +11,8 @@ using WEB.Domain.Entities;
 
 namespace WEB.Api.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class CategoriesController : Controller
     {
         private readonly IAPICategoryService _categoryService;

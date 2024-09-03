@@ -6,9 +6,11 @@ using WEB_253502_Garnik.Services.CourceService;
 namespace WEB_253502_Garnik.Extensions {
     public static class HostingExtensions {
         public static void RegisterCustomServices(this WebApplicationBuilder builder) {
-            builder.Services.AddScoped<ICategoryService, MemoryCategoryService>();
-            builder.Services.AddScoped<ICourseService, MemoryCourseService>();
-            builder.Services.AddHttpClient<IAPIProductService, ApiProductService>(opt =>
+            //builder.Services.AddScoped<ICategoryService, MemoryCategoryService>();
+            //builder.Services.AddScoped<ICourseService, MemoryCourseService>();
+            builder.Services.AddHttpClient<ICourseService, ApiCourseService>(opt =>
+            opt.BaseAddress = new Uri(UriData.ApiUri));
+            builder.Services.AddHttpClient<ICategoryService, ApiCategoryService>(opt =>
             opt.BaseAddress = new Uri(UriData.ApiUri));
 
         }

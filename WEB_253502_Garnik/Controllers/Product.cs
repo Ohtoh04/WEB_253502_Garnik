@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WEB.Api.Services;
 using WEB.Domain.Entities;
 using WEB_253502_Garnik.Services.CategoryService;
 using WEB_253502_Garnik.Services.CourceService;
 
 namespace WEB_253502_Garnik.Controllers {
     public class Product : Controller {
+        //ICourseService _courseService;
+        //ICategoryService _categoryService;
         ICourseService _courseService;
         ICategoryService _categoryService;
         public Product(ICourseService courseservice, ICategoryService categoryservice) {

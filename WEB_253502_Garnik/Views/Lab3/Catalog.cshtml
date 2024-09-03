@@ -29,8 +29,11 @@
 
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
     <title>Catalog</title>
+
 </head>
 <body>
 
@@ -90,55 +93,63 @@
                     }
                 </div>
             </div>
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <!-- Previous button -->
+                    <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                        <a class="page-link"
+                           asp-controller="Product"
+                           asp-action="Catalog"
+                           asp-route-pageNo="@(currentPage - 1)"
+                           asp-route-category="@ViewBag.CurrentCategory.NormalizedName">Previous</a>
+                    </li>
+
+                    <!-- Page buttons -->
+                    @if (page1 != 0)
+                    {
+                        <li class="page-item @(page1 == currentPage ? "active" : "")">
+                            <a class="page-link"
+                               asp-controller="Product"
+                               asp-action="Catalog"
+                               asp-route-pageNo="@page1"
+                               asp-route-category="@ViewBag.CurrentCategory.NormalizedName">@page1</a>
+                        </li>
+                    }
+
+                    @if (page2 != 0)
+                    {
+                        <li class="page-item @(page2 == currentPage ? "active" : "")">
+                            <a class="page-link"
+                               asp-controller="Product"
+                               asp-action="Catalog"
+                               asp-route-pageNo="@page2"
+                               asp-route-category="@ViewBag.CurrentCategory.NormalizedName">@page2</a>
+                        </li>
+                    }
+
+                    @if (page3 != 0)
+                    {
+                        <li class="page-item @(page3 == currentPage ? "active" : "")">
+                            <a class="page-link"
+                               asp-controller="Product"
+                               asp-action="Catalog"
+                               asp-route-pageNo="@page3"
+                               asp-route-category="@ViewBag.CurrentCategory">@page3</a>
+                        </li>
+                    }
+
+                    <!-- Next button -->
+                    <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                        <a class="page-link"
+                           asp-controller="Product"
+                           asp-action="Catalog"
+                           asp-route-pageNo="@(currentPage + 1)"
+                           asp-route-category="@ViewBag.CurrentCategory">Next</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
 
-        <nav aria-label="Page navigation">
-            <ul class="pagination">
-                <!-- Previous button -->
-                <li class="page-item @(currentPage == 1 ? "disabled" : "")">
-                    <a class="page-link"
-                       asp-controller="Product"
-                       asp-action="Catalog"
-                       asp-route-pageNo="@(currentPage - 1)">Previous</a>
-                </li>
-
-                <!-- Page buttons -->
-                @if (page1 != 0) {
-                    <li class="page-item @(page1 == currentPage ? "active" : "")">
-                        <a class="page-link"
-                           asp-controller="Product"
-                           asp-action="Catalog"
-                           asp-route-pageNo="@page1">@page1</a>
-                    </li>
-                }
-
-                @if (page2 != 0) {
-                    <li class="page-item @(page2 == currentPage ? "active" : "")">
-                        <a class="page-link"
-                           asp-controller="Product"
-                           asp-action="Catalog"
-                           asp-route-pageNo="@page2">@page2</a>
-                    </li>
-                }
-
-                @if (page3 != 0) {
-                    <li class="page-item @(page3 == currentPage ? "active" : "")">
-                        <a class="page-link"
-                           asp-controller="Product"
-                           asp-action="Catalog"
-                           asp-route-pageNo="@page3">@page3</a>
-                    </li>
-                }
-
-                <!-- Next button -->
-                <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
-                    <a class="page-link"
-                       asp-controller="Product"
-                       asp-action="Catalog"
-                       asp-route-pageNo="@(currentPage + 1)">Next</a>
-                </li>
-            </ul>
-        </nav>
     </div>
 
 </body>
