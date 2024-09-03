@@ -8,17 +8,18 @@ using Microsoft.EntityFrameworkCore;
 using WEB.Api.Data;
 using WEB.Domain.Entities;
 
-namespace WEB_253502_Garnik.Areas
+namespace WEB_253502_Garnik.Areas.Admin
 {
-    public class DetailsModel : PageModel
+    public class DeleteModel : PageModel
     {
         private readonly WEB.Api.Data.AppDbContext _context;
 
-        public DetailsModel(WEB.Api.Data.AppDbContext context)
+        public DeleteModel(WEB.Api.Data.AppDbContext context)
         {
             _context = context;
         }
 
+        [BindProperty]
         public Course Course { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
@@ -29,6 +30,7 @@ namespace WEB_253502_Garnik.Areas
             }
 
             var course = await _context.Courses.FirstOrDefaultAsync(m => m.ID == id);
+
             if (course == null)
             {
                 return NotFound();
@@ -38,6 +40,24 @@ namespace WEB_253502_Garnik.Areas
                 Course = course;
             }
             return Page();
+        }
+
+        public async Task<IActionResult> OnPostAsync(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var course = await _context.Courses.FindAsync(id);
+            if (course != null)
+            {
+                Course = course;
+                _context.Courses.Remove(Course);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToPage("./Index");
         }
     }
 }

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using WEB.Api.Data;
 using WEB.Domain.Entities;
 
-namespace WEB_253502_Garnik.Areas
+namespace WEB_253502_Garnik.Areas.Admin
 {
     public class CreateModel : PageModel
     {
