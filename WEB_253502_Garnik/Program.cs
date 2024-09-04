@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 builder.RegisterCustomServices();
 
 // Получение конфигурации из appsettings.json
@@ -31,10 +32,10 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapAreaControllerRoute(
-    name: "Admin",
-    areaName: "Admin",
-    pattern: "profile/{controller=Home}/{action=Index}/{id?}");
+
+
+// Add this to map Razor Pages
+app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",

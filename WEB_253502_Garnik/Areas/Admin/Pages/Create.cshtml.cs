@@ -12,9 +12,9 @@ namespace WEB_253502_Garnik.Areas.Admin
 {
     public class CreateModel : PageModel
     {
-        private readonly WEB.Api.Data.AppDbContext _context;
+        private readonly ICourseService _context;
 
-        public CreateModel(WEB.Api.Data.AppDbContext context)
+        public CreateModel(ICourseService context)
         {
             _context = context;
         }
@@ -28,15 +28,14 @@ namespace WEB_253502_Garnik.Areas.Admin
         public Course Course { get; set; } = default!;
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(IFormFile? formFile)
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            _context.Courses.Add(Course);
-            await _context.SaveChangesAsync();
+            await _context.CreateCourseAsync(Course, formFile);
 
             return RedirectToPage("./Index");
         }

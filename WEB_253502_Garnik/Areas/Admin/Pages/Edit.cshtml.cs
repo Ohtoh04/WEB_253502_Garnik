@@ -8,14 +8,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WEB.Api.Data;
 using WEB.Domain.Entities;
+using WEB_253502_Garnik.Services.CourceService;
 
 namespace WEB_253502_Garnik.Areas.Admin
 {
     public class EditModel : PageModel
     {
-        private readonly WEB.Api.Data.AppDbContext _context;
+        private readonly ICourseService _context;
 
-        public EditModel(WEB.Api.Data.AppDbContext context)
+        public EditModel(ICourseService context)
         {
             _context = context;
         }
@@ -30,38 +31,30 @@ namespace WEB_253502_Garnik.Areas.Admin
                 return NotFound();
             }
 
-            var course =  await _context.Courses.FirstOrDefaultAsync(m => m.ID == id);
-            if (course == null)
+            var course =  await _context.GetCourseByIdAsync(id ?? default(int));
+            if (course.Data == null)
             {
                 return NotFound();
             }
-            Course = course;
+            Course = course.Data;
             return Page();
         }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
-        {
-            if (!ModelState.IsValid)
-            {
+        public async Task<IActionResult> OnPostAsync() {
+            if (!ModelState.IsValid) {
                 return Page();
             }
 
-            _context.Attach(Course).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CourseExists(Course.ID))
-                {
+            try {
+                // Assuming Course.ID is being set correctly in the model
+                await _context.UpdateCourseAsync(Course.ID, Course, null);
+            } catch (DbUpdateConcurrencyException) {
+                var courseExists = await _context.GetCourseByIdAsync(Course.ID);
+                if (courseExists.Data == null) {
                     return NotFound();
-                }
-                else
-                {
+                } else {
                     throw;
                 }
             }
@@ -69,9 +62,10 @@ namespace WEB_253502_Garnik.Areas.Admin
             return RedirectToPage("./Index");
         }
 
+
         private bool CourseExists(int id)
         {
-            return _context.Courses.Any(e => e.ID == id);
+            return _context.GetCourseListAsync(null).Result.Data.Items.Any(e => e.ID == id);
         }
     }
 }

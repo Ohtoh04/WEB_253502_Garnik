@@ -12,9 +12,9 @@ namespace WEB_253502_Garnik.Areas.Admin
 {
     public class IndexModel : PageModel
     {
-        private readonly WEB.Api.Data.AppDbContext _context;
+        private readonly ICourseService _context;
 
-        public IndexModel(WEB.Api.Data.AppDbContext context)
+        public IndexModel(ICourseService context)
         {
             _context = context;
         }
@@ -23,7 +23,7 @@ namespace WEB_253502_Garnik.Areas.Admin
 
         public async Task OnGetAsync()
         {
-            Course = await _context.Courses.ToListAsync();
+            Course = _context.GetCourseListAsync(null).Result.Data.Items;
         }
     }
 }

@@ -12,9 +12,9 @@ namespace WEB_253502_Garnik.Areas.Admin
 {
     public class DetailsModel : PageModel
     {
-        private readonly WEB.Api.Data.AppDbContext _context;
+        private readonly ICourseService _context;
 
-        public DetailsModel(WEB.Api.Data.AppDbContext context)
+        public DetailsModel(ICourseService context)
         {
             _context = context;
         }
@@ -28,14 +28,14 @@ namespace WEB_253502_Garnik.Areas.Admin
                 return NotFound();
             }
 
-            var course = await _context.Courses.FirstOrDefaultAsync(m => m.ID == id);
-            if (course == null)
+            var course = await _context.GetCourseByIdAsync(id ?? default(int));
+            if (course.Data == null)
             {
                 return NotFound();
             }
             else
             {
-                Course = course;
+                Course = course.Data;
             }
             return Page();
         }

@@ -12,9 +12,9 @@ namespace WEB_253502_Garnik.Areas.Admin
 {
     public class DeleteModel : PageModel
     {
-        private readonly WEB.Api.Data.AppDbContext _context;
+        private readonly ICourseService _context;
 
-        public DeleteModel(WEB.Api.Data.AppDbContext context)
+        public DeleteModel(ICourseService context)
         {
             _context = context;
         }
@@ -29,15 +29,15 @@ namespace WEB_253502_Garnik.Areas.Admin
                 return NotFound();
             }
 
-            var course = await _context.Courses.FirstOrDefaultAsync(m => m.ID == id);
+            var course = await _context.GetCourseByIdAsync(id ?? default(int)); 
 
-            if (course == null)
+            if (course.Data == null)
             {
                 return NotFound();
             }
             else
             {
-                Course = course;
+                Course = course.Data; 
             }
             return Page();
         }
@@ -49,12 +49,11 @@ namespace WEB_253502_Garnik.Areas.Admin
                 return NotFound();
             }
 
-            var course = await _context.Courses.FindAsync(id);
-            if (course != null)
+            var course = await _context.GetCourseByIdAsync(id ?? default(int));
+            if (course.Data != null)
             {
-                Course = course;
-                _context.Courses.Remove(Course);
-                await _context.SaveChangesAsync();
+                Course = course.Data;
+                await _context.DeleteCourseAsync(id ?? default(int));
             }
 
             return RedirectToPage("./Index");
