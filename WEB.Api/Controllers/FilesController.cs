@@ -40,7 +40,12 @@ namespace WEB.Api.Controllers {
 
         [HttpDelete]
         public IActionResult DeleteFile(string fileName) {
-            //. . .
+            var filePath = Path.Combine(_imagePath, fileName);
+            var fileInfo = new FileInfo(filePath);
+
+            if(fileInfo.Exists) {
+                fileInfo.Delete();
+            }
             return Ok();
         }
     }

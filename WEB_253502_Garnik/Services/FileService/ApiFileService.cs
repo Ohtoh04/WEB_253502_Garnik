@@ -1,14 +1,24 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace WEB_253502_Garnik.Services.FileService {
     public class ApiFileService : IFileService {
         private readonly HttpClient _httpClient;
+        private readonly HttpContext _httpContext;
+        private readonly HttpContextAccessor httpContextAccessor;
         public ApiFileService(HttpClient httpClient) {
             _httpClient = httpClient;
             _httpContext = httpContextAccessor.HttpContext;
         }
-        public async Task DeleteFileAsync(string fileUri) {
-        //. . .
+        public async Task DeleteFileAsync(string fileUri) {//unfin
+            // Создать объект запроса
+            var request = new HttpRequestMessage {
+                Method = HttpMethod.Delete
+            };
+            request.Content = new StringContent(fileUri);
+            var response = await _httpClient.SendAsync(request);
+
         }
         public async Task<string> SaveFileAsync(IFormFile formFile) {
             // Создать объект запроса
@@ -33,3 +43,4 @@ namespace WEB_253502_Garnik.Services.FileService {
             return String.Empty;
         }
     }
+}

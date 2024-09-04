@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.Json;
 using WEB.Domain.Entities;
 using WEB.Domain.Models;
+using WEB_253502_Garnik.Services.FileService;
 
 namespace WEB.Api.Services
 {
@@ -13,17 +14,32 @@ namespace WEB.Api.Services
         private string _pageSize;
         private JsonSerializerOptions _serializerOptions;
         private ILogger<ApiCourseService> _logger;
+        private IFileService _fileService;
+
+
         public ApiCourseService(HttpClient httpClient,
         IConfiguration configuration,
-        ILogger<ApiCourseService> logger) {
+        ILogger<ApiCourseService> logger, IFileService fileService) {
             _httpClient = httpClient;
             _pageSize = configuration.GetSection("ItemsPerPage").Value;
             _serializerOptions = new JsonSerializerOptions() {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             };
             _logger = logger;
+            _fileService = fileService;
         }
+
+
         public async Task<ResponseData<Course>> CreateCourseAsync(Course product, IFormFile? formFile) {
+            product.Image = "Images/noimage.jpg";
+            // Сохранить файл изображения
+            if (formFile != null) {
+                var imageUrl = await _fileService.SaveFileAsync(formFile);
+                // Добавить в объект Url изображения
+                if (!string.IsNullOrEmpty(imageUrl))
+                    product.Image = imageUrl;
+            }
+
             var uri = new Uri(_httpClient.BaseAddress.AbsoluteUri + "Courses");
             var response = await _httpClient.PostAsJsonAsync(uri, product, _serializerOptions);
             if (response.IsSuccessStatusCode) {
@@ -33,6 +49,8 @@ namespace WEB.Api.Services
             _logger.LogError($"-----> object not created. Error:{ response.StatusCode.ToString()}");
             return ResponseData<Course>.Error($"Объект не добавлен. Error:{response.StatusCode.ToString()}");
         }
+
+
         public Task DeleteCourseAsync(int id) {
             throw new NotImplementedException();
         }

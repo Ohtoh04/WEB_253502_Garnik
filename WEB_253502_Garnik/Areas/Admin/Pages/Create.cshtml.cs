@@ -5,13 +5,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using WEB.Api.Data;
 using WEB.Domain.Entities;
 
 namespace WEB_253502_Garnik.Areas.Admin
 {
     public class CreateModel : PageModel
     {
+        [BindProperty]
+        public IFormFile? Image { get; set; }
+
+
         private readonly ICourseService _context;
 
         public CreateModel(ICourseService context)
