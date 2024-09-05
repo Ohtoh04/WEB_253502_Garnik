@@ -6,6 +6,7 @@ using WEB.Domain.Entities;
 using WEB.Domain.Models;
 using WEB_253502_Garnik.Controllers;
 using WEB_253502_Garnik.Services.FileService;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WEB.Api.Services
 {
@@ -55,11 +56,14 @@ namespace WEB.Api.Services
         //will do
         public async Task DeleteCourseAsync(int id) {
             var uri = new Uri(_httpClient.BaseAddress.AbsoluteUri + "Courses" + $"/{id}");
+
+            var delcourse = GetCourseByIdAsync(id).Result.Data ?? new Course();
+            await _fileService.DeleteFileAsync(delcourse.Image ?? "");
             var response = await _httpClient.DeleteAsync(uri);
             if (response.IsSuccessStatusCode) {
                 return;
             }
-            _logger.LogError($"-----> object not created. Error:{response.StatusCode.ToString()}");
+            _logger.LogError($"-----> object not Deleetd. Error:{response.StatusCode.ToString()}");
         }
 
         public async Task<ResponseData<Course>> GetCourseByIdAsync(int id) {
@@ -123,9 +127,11 @@ namespace WEB.Api.Services
             if (formFile != null) {
                 var imageUrl = await _fileService.SaveFileAsync(formFile);
                 // Добавить в объект Url изображения
-                if (!string.IsNullOrEmpty(imageUrl))
-
+                if (!string.IsNullOrEmpty(imageUrl)) {
+                    await _fileService.DeleteFileAsync(product.Image);
                     product.Image = imageUrl;
+                }
+
             }
 
             var uri = new Uri(_httpClient.BaseAddress.AbsoluteUri + "Courses" + $"/{id}");

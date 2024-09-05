@@ -148,27 +148,28 @@ namespace WEB.Api.Services
         //fin
         public async Task UpdateProductAsync(int id, Course product) {
             // Retrieve the existing course by its ID
-            var existingProduct = await _context.Courses
-                                       .Include(c => c.Category)
-                                       .FirstOrDefaultAsync(c => c.Id == id);
+            //var existingProduct = await _context.Courses
+            //                           .Include(c => c.Category)
+            //                           .FirstOrDefaultAsync(c => c.Id == id);
 
-            if (existingProduct == null) {
-                throw new KeyNotFoundException("Course not found");
-            }
+            //if (existingProduct == null) {
+            //    throw new KeyNotFoundException("Course not found");
+            //}
 
-            // Update properties
-            existingProduct.Name = product.Name;
-            existingProduct.Description = product.Description;
-            existingProduct.Price = product.Price;
-            existingProduct.Image = product.Image;
+            //// Update properties
+            //existingProduct.Name = product.Name;
+            //existingProduct.Description = product.Description;
+            //existingProduct.Price = product.Price;
+            //existingProduct.Image = product.Image;
 
-            if (product.Category != null) {
-                existingProduct.Category = product.Category;
-            }
+            //if (product.Category != null) {
+            //    existingProduct.Category = product.Category;
+            //}
 
             try {
 
                 // Save changes to the database
+                _context.Courses.Update(product);
                 await _context.SaveChangesAsync();
             } catch (Exception ex) {
                 Console.WriteLine(ex.ToString());

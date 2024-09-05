@@ -33,15 +33,14 @@ namespace WEB.Api.Controllers {
 
             // получить Url файла
             var host = HttpContext.Request.Host;
-            var fileUrl = $"/Images/{file.FileName}";
+            var fileUrl = $"Https://{host}/Images/{file.FileName}";
             return Ok(fileUrl);
         }
 
 
-        [HttpDelete]
+        [HttpDelete("{fileName}")]
         public IActionResult DeleteFile(string fileName) {
-            var filePath = Path.Combine(_imagePath, fileName);
-            var fileInfo = new FileInfo(filePath);
+            var fileInfo = new FileInfo(_imagePath + "/"+fileName);
 
             if(fileInfo.Exists) {
                 fileInfo.Delete();

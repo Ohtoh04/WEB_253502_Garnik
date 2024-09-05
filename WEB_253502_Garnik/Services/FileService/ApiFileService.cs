@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.CodeAnalysis.Diagnostics;
+using System.Security.Policy;
 
 namespace WEB_253502_Garnik.Services.FileService {
     public class ApiFileService : IFileService {
@@ -12,20 +13,19 @@ namespace WEB_253502_Garnik.Services.FileService {
             _httpContext = httpContextAccessor.HttpContext;
         }
         public async Task DeleteFileAsync(string fileUri) {
-            // Create the DELETE request message
-            var request = new HttpRequestMessage {
-                Method = HttpMethod.Delete,
-                RequestUri = new Uri(fileUri)
-            };
-
-            // Send the DELETE request to the API
-            var response = await _httpClient.SendAsync(request);
-
-            // Handle the response, throwing an exception if the request was not successful
-            if (!response.IsSuccessStatusCode) {
-                throw new Exception($"Failed to delete the file. Status code: {response.StatusCode}");
+            using (var client = new HttpClient()) {
+                Uri uri = new Uri(fileUri);
+                string fileName = System.IO.Path.GetFileName(uri.LocalPath);
+                uri = new Uri($"{_httpClient.BaseAddress.AbsoluteUri}/" + fileName);
+                var response = await client.DeleteAsync(uri);
+                // Handle the response, throwing an exception if the request was not successful
+                if (!response.IsSuccessStatusCode) {
+                    throw new Exception($"Failed to delete the file. Status code: {response.StatusCode}");
+                }
             }
         }
+
+
 
 
         public async Task<string> SaveFileAsync(IFormFile formFile) {
