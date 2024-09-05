@@ -35,14 +35,11 @@
 
             <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Course.Image)</dt>
             <dd class="col-sm-10">@Html.DisplayFor(model => model.Course.Image)</dd>
-
-            <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Course.MIME)</dt>
-            <dd class="col-sm-10">@Html.DisplayFor(model => model.Course.MIME)</dd>
         </dl>
     </div>
 
     <div>
-        <a asp-page="./Edit" asp-route-id="@Model.Course.ID" class="btn btn-primary">Edit</a>
+        <a asp-page="./Edit" asp-route-id="@Model.Course.Id" class="btn btn-primary">Edit</a>
         <a asp-page="./Index" class="btn btn-secondary">Back to List</a>
     </div>
 

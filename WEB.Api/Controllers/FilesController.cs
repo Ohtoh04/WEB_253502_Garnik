@@ -33,7 +33,7 @@ namespace WEB.Api.Controllers {
 
             // получить Url файла
             var host = HttpContext.Request.Host;
-            var fileUrl = $"Https://{host}/Images/{file.FileName}";
+            var fileUrl = $"/Images/{file.FileName}";
             return Ok(fileUrl);
         }
 

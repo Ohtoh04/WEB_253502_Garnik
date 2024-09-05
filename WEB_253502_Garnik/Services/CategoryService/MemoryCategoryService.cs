@@ -7,15 +7,15 @@ namespace WEB_253502_Garnik.Services.CategoryService {
             var categories = new List<Category>
             {
                 new Category {
-                    ID = 1,
+                    Id = 1,
                     Name = "Languages",
                     NormalizedName = "Languages" },
                 new Category {
-                    ID = 2,
+                    Id = 2,
                     Name = "Driving",
                     NormalizedName = "Driving" },
                 new Category {
-                    ID = 3,
+                    Id = 3,
                     Name = "Autism stimulation",
                     NormalizedName = "Autism" }
             };

@@ -7,19 +7,27 @@ namespace WEB_253502_Garnik.Services.FileService {
         private readonly HttpClient _httpClient;
         private readonly HttpContext _httpContext;
         private readonly HttpContextAccessor httpContextAccessor;
-        public ApiFileService(HttpClient httpClient) {
+        public ApiFileService(HttpClient httpClient, IHttpContextAccessor httpContextAccessor) {
             _httpClient = httpClient;
             _httpContext = httpContextAccessor.HttpContext;
         }
-        public async Task DeleteFileAsync(string fileUri) {//unfin
-            // Создать объект запроса
+        public async Task DeleteFileAsync(string fileUri) {
+            // Create the DELETE request message
             var request = new HttpRequestMessage {
-                Method = HttpMethod.Delete
+                Method = HttpMethod.Delete,
+                RequestUri = new Uri(fileUri)
             };
-            request.Content = new StringContent(fileUri);
+
+            // Send the DELETE request to the API
             var response = await _httpClient.SendAsync(request);
 
+            // Handle the response, throwing an exception if the request was not successful
+            if (!response.IsSuccessStatusCode) {
+                throw new Exception($"Failed to delete the file. Status code: {response.StatusCode}");
+            }
         }
+
+
         public async Task<string> SaveFileAsync(IFormFile formFile) {
             // Создать объект запроса
             var request = new HttpRequestMessage {

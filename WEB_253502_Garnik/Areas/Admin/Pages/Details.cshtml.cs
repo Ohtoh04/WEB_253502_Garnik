@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using WEB.Api.Data;
 using WEB.Domain.Entities;
 
 namespace WEB_253502_Garnik.Areas.Admin

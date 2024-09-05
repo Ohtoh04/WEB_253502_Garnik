@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using WEB.Api.Data;
 using WEB.Domain.Entities;
 using WEB_253502_Garnik.Services.CourceService;
 
@@ -14,15 +13,29 @@ namespace WEB_253502_Garnik.Areas.Admin
 {
     public class EditModel : PageModel
     {
-        private readonly ICourseService _context;
+        [BindProperty]
+        public IFormFile? Image { get; set; }
 
-        public EditModel(ICourseService context)
+        [BindProperty]
+        public int categoryID { get; set; }
+
+        public Category CurrentCategory { get; set; } = new Category();
+        public List<Category> Categories { get; set; } = new List<Category>();
+
+        private readonly ICourseService _context;
+        private readonly ICategoryService _categoryService;
+
+
+        public EditModel(ICourseService context, ICategoryService categoryService)
         {
             _context = context;
+            _categoryService = categoryService;
         }
 
         [BindProperty]
         public Course Course { get; set; } = default!;
+
+
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -31,12 +44,18 @@ namespace WEB_253502_Garnik.Areas.Admin
                 return NotFound();
             }
 
+            Categories = _categoryService.GetCategoryListAsync().Result.Data ?? new List<Category>();
+
+            
             var course =  await _context.GetCourseByIdAsync(id ?? default(int));
             if (course.Data == null)
             {
                 return NotFound();
             }
             Course = course.Data;
+            var cat = Categories.FirstOrDefault(cat => cat.Id == Course.Category?.Id);
+            CurrentCategory = cat ?? new Category(); // Replace `Category` with your actual category class.
+            categoryID = CurrentCategory.Id;
             return Page();
         }
 
@@ -46,12 +65,14 @@ namespace WEB_253502_Garnik.Areas.Admin
             if (!ModelState.IsValid) {
                 return Page();
             }
-
+           
             try {
-                // Assuming Course.ID is being set correctly in the model
-                await _context.UpdateCourseAsync(Course.ID, Course, null);
+
+                Course.Category = (_categoryService.GetCategoryListAsync().Result.Data ?? new List<Category>())
+                    .FirstOrDefault(cat => cat.Id == categoryID);
+                await _context.UpdateCourseAsync(Course.Id, Course, Image);
             } catch (DbUpdateConcurrencyException) {
-                var courseExists = await _context.GetCourseByIdAsync(Course.ID);
+                var courseExists = await _context.GetCourseByIdAsync(Course.Id);
                 if (courseExists.Data == null) {
                     return NotFound();
                 } else {
@@ -65,7 +86,7 @@ namespace WEB_253502_Garnik.Areas.Admin
 
         private bool CourseExists(int id)
         {
-            return _context.GetCourseListAsync(null).Result.Data.Items.Any(e => e.ID == id);
+            return _context.GetCourseListAsync(null).Result.Data.Items.Any(e => e.Id == id);
         }
     }
 }

@@ -20,29 +20,29 @@ namespace WEB_253502_Garnik.Services.CourceService {
 
         private void SetupData() {
             _courses = new List<Course> {
-                new Course {ID = 1, Name="English language",
+                new Course {Id = 1, Name="English language",
                             Description="learn inglish sooka",
                             Price = 200, Image="/Images/czipsy.jpg",
                             Category= _categories.Find(c=>c.NormalizedName.Equals("Languages"))},
-                new Course { ID = 2, Name="German language", Description="deutsch sprache ja ja",
+                new Course { Id = 2, Name="German language", Description="deutsch sprache ja ja",
                             Price = 330, Image="/Images/niemecko.jpg",
                             Category= _categories.Find(c=>c.NormalizedName.Equals("Languages"))},
-                new Course { ID = 3, Name="Tancy s gorinom", Description="bebebebebbebe",
+                new Course { Id = 3, Name="Tancy s gorinom", Description="bebebebebbebe",
                             Price = 69, Image="/Images/ded.jpg",
                             Category= _categories.Find(c=>c.NormalizedName.Equals("Autism"))},
-                new Course { ID = 4, Name="gddfdjgj", Description="fjghsdshshs",
+                new Course { Id = 4, Name="gddfdjgj", Description="fjghsdshshs",
                             Price = 420, Image="/Images/happy.jpg",
                             Category= _categories.Find(c=>c.NormalizedName.Equals("Autism"))},
-                new Course { ID = 5, Name="bvmcbmcvmvb", Description="asfhfdhfd",
+                new Course { Id = 5, Name="bvmcbmcvmvb", Description="asfhfdhfd",
                             Price = 1234, Image="/Images/IMG_20191029_000252.jpg",
                             Category= _categories.Find(c=>c.NormalizedName.Equals("Autism"))},
-                new Course { ID = 6, Name="aboba", Description="asfafafaf",
+                new Course { Id  = 6, Name="aboba", Description="asfafafaf",
                             Price = 228, Image="/Images/ladia.jpg",
                             Category= _categories.Find(c=>c.NormalizedName.Equals("Autism"))},
-                new Course { ID = 7, Name="babababba", Description="brebrbwqe",
+                new Course { Id = 7, Name="babababba", Description="brebrbwqe",
                             Price = 282, Image="/Images/screen-2.jpg",
                             Category= _categories.Find(c=>c.NormalizedName.Equals("Autism"))},
-                new Course { ID = 8, Name="bebebebbe", Description="ghedfgdgfd",
+                new Course { Id = 8, Name="bebebebbe", Description="ghedfgdgfd",
                             Price = 25, Image="/Images/vozmak.jpg",
                             Category= _categories.Find(c=>c.NormalizedName.Equals("Autism"))},
             };
@@ -91,7 +91,7 @@ namespace WEB_253502_Garnik.Services.CourceService {
         /// <returns>Найденный объект или null, если объект не найден</returns>
         public Task<ResponseData<Course>> GetCourseByIdAsync(int id) {
             var responseData = new ResponseData<Course>();
-            responseData.Data = _courses.FirstOrDefault(course => course.ID == id);
+            responseData.Data = _courses.FirstOrDefault(course => course.Id == id);
             return Task.FromResult(responseData);
         }
         /// <summary>
@@ -102,7 +102,7 @@ namespace WEB_253502_Garnik.Services.CourceService {
         /// <param name="formFile">Файл изображения</param>
         /// <returns></returns>
         public Task UpdateCourseAsync(int id, Course course, IFormFile? formFile) {
-            var existingCourse = _courses.Find(c => c.ID == id);
+            var existingCourse = _courses.Find(c => c.Id == id);
 
             if (existingCourse != null) {
                 existingCourse.Name = course.Name;
@@ -130,7 +130,7 @@ namespace WEB_253502_Garnik.Services.CourceService {
         /// <param name="id">Id удаляемомго объекта</param>
         /// <returns></returns>
         public Task DeleteCourseAsync(int id) {
-            _courses.Remove(_courses.Find(course => course.ID == id));
+            _courses.Remove(_courses.Find(course => course.Id == id));
             return Task.CompletedTask;
         }
         /// <summary>

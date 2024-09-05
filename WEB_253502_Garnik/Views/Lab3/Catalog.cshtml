@@ -86,7 +86,7 @@
                                             <strong>Price: @course.Price</strong>
                                         </div>
                                     </div>
-                                    <a href="@Url.Action("Add", "Cart", new { ID = course.ID, returnurl = @ViewData["ReturnUrl"] })" class="btn btn-outline-primary" style="width: 100%;">Добавить в корзину</a>
+                                    <a href="@Url.Action("Add", "Cart", new { ID = course.Id, returnurl = @ViewData["ReturnUrl"] })" class="btn btn-outline-primary" style="width: 100%;">Добавить в корзину</a>
                                 </div>
                             </div>
                         }
@@ -134,12 +134,12 @@
                                asp-controller="Product"
                                asp-action="Catalog"
                                asp-route-pageNo="@page3"
-                               asp-route-category="@ViewBag.CurrentCategory">@page3</a>
+                               asp-route-category="@ViewBag.CurrentCategory.NormalizedName">@page3</a>
                         </li>
                     }
 
                     <!-- Next button -->
-                    <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                    <li class="page-item @(currentPage >= totalPages ? "disabled" : "")">
                         <a class="page-link"
                            asp-controller="Product"
                            asp-action="Catalog"

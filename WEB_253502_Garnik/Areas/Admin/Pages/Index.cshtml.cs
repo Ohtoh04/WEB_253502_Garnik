@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using WEB.Api.Data;
+using NuGet.Packaging;
 using WEB.Domain.Entities;
 
 namespace WEB_253502_Garnik.Areas.Admin
@@ -19,11 +19,15 @@ namespace WEB_253502_Garnik.Areas.Admin
             _context = context;
         }
 
-        public IList<Course> Course { get;set; } = default!;
+        public IList<Course> Course { get;set; } = new List<Course>();
 
         public async Task OnGetAsync()
         {
-            Course = _context.GetCourseListAsync(null).Result.Data.Items;
+            var coursesResponse = await _context.GetCourseListAsync(null);
+            for (int i = 1; i <= coursesResponse.Data.TotalPages; i++) {
+                coursesResponse = await _context.GetCourseListAsync(null, i);
+                Course.AddRange(coursesResponse.Data.Items);
+            }
         }
     }
 }

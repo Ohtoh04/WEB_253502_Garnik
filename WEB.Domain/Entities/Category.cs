@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WEB.Domain.Entities {
     public class Category {
-        public int ID { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public string NormalizedName { get; set; }
     }

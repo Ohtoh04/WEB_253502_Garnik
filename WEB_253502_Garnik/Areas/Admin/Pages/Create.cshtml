@@ -24,7 +24,7 @@
     <hr />
     <div class="row">
         <div class="col-md-4">
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="Course.Name" class="control-label"></label>
@@ -38,19 +38,20 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Course.Price" class="control-label"></label>
-                    <input asp-for="Course.Price" class="form-control" />
+                    <input type="number"  asp-for="Course.Price" class="form-control" data-val-number-decimal-separator="," />
                     <span asp-validation-for="Course.Price" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Course.Image" class="control-label"></label>
-                    <input asp-for="Course.Image" class="form-control" />
-                    <span asp-validation-for="Course.Image" class="text-danger"></span>
-                    <img src="Course.Image" class=""/>
+                    <label for="Image">Course Image</label>
+                    <input type="file" asp-for="Image" class="form-control" />
+                    <span asp-validation-for="Image" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Course.MIME" class="control-label"></label>
-                    <input asp-for="Course.MIME" class="form-control" />
-                    <span asp-validation-for="Course.MIME" class="text-danger"></span>
+                    <label asp-for="categoryID" class="control-label">Category</label>
+                    <select asp-for="categoryID" class="form-control" asp-items="@(new SelectList(Model.Categories, "Id", "Name", Model.categoryID))">
+                        <option value="">-- Select Category --</option>
+                    </select>
+                    <span asp-validation-for="categoryID" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Create" class="btn btn-primary" />
