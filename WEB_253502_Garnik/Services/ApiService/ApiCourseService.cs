@@ -44,7 +44,6 @@ namespace WEB.Api.Services
             // Устанавливаем заголовок авторизации
             await SetAuthorizationHeaderAsync();
 
-            product.Image = "/Images/noimage.jpg";
             if (formFile != null) {
                 var imageUrl = await _fileService.SaveFileAsync(formFile);
                 if (!string.IsNullOrEmpty(imageUrl))
@@ -129,7 +128,6 @@ namespace WEB.Api.Services
             // Устанавливаем заголовок авторизации
             await SetAuthorizationHeaderAsync();
 
-            product.Image = "/Images/noimage.jpg";
             if (formFile != null) {
                 var imageUrl = await _fileService.SaveFileAsync(formFile);
                 if (!string.IsNullOrEmpty(imageUrl)) {
