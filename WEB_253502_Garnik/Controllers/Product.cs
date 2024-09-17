@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Mvc;
 using WEB.Api.Services;
 using WEB.Domain.Entities;
 using WEB_253502_Garnik.Extensions;
@@ -20,9 +21,13 @@ namespace WEB_253502_Garnik.Controllers {
             var courseResponse = await _courseService.GetCourseListAsync(category, pageNo);
             if (!courseResponse.Successfull)
                 return NotFound(courseResponse.ErrorMessage);
-            ViewBag.Categories = _categoryService.GetCategoryListAsync().Result.Data;
-            var cat = _categoryService.GetCategoryListAsync().Result.Data.FirstOrDefault(cat => cat.NormalizedName == category);
-            ViewBag.CurrentCategory = cat ?? new Category(); // Replace `Category` with your actual category class.
+            var categoryResponse = await _categoryService.GetCategoryListAsync();
+			if (!categoryResponse.Successfull)
+				return NotFound(categoryResponse.ErrorMessage);
+			ViewBag.Categories = categoryResponse.Data;
+            var cat = categoryResponse.Data.FirstOrDefault(cat => cat.NormalizedName == category);
+
+			ViewBag.CurrentCategory = cat ?? new Category(); // Replace `Category` with your actual category class.
 
             ViewBag.IsAjaxRequest = Request.IsAjaxRequest();
             if (Request.IsAjaxRequest()) {
@@ -52,9 +57,11 @@ namespace WEB_253502_Garnik.Controllers {
                     Page1 = page1,
                     Page2 = page2,
                     Page3 = page3,
-                    CurrentCategory = cat,
-                    Courses = courseResponse.Data.Items
+                    CurrentCategory = cat == null ? "" : cat.NormalizedName,
+                    Courses = courseResponse.Data.Items,
+                    ReturnUrl = Request.Path + Request.QueryString.ToUriComponent()
                 };
+
                 ViewBag.viewModel = viewModel;
                 return PartialView("_ListPartial", viewModel);
 

@@ -14,7 +14,7 @@
                                 <strong>Price: @course.Price</strong>
                             </div>
                         </div>
-                        <a href="@Url.Action("Add", "Cart", new { ID = course.Id, returnurl = @ViewData["ReturnUrl"] })" class="btn btn-outline-primary" style="width: 100%;">Добавить в корзину</a>
+                        <a href="@Url.Action("Add", "Cart", new { ID = course.Id, returnurl = Model.ReturnUrl })" class="btn btn-outline-primary" style="width: 100%;">Добавить в корзину</a>
                     </div>
                 </div>
             }
@@ -25,5 +25,5 @@
 <paginator
 	current-page="@Model.CurrentPage" total-pages="@Model.TotalPages"
 	page1="@Model.Page1" page2="@Model.Page2" page3="@Model.Page3"
-		   current-category="@(string.IsNullOrEmpty(ViewBag.CurrentCategory?.Name) ? "Все" : ViewBag.CurrentCategory.Name)">
+           current-category="@(string.IsNullOrEmpty(@Model.CurrentCategory) ? "" : @Model.CurrentCategory)">
 </paginator>

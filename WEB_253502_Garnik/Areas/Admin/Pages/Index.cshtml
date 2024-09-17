@@ -52,7 +52,7 @@
             }
         </tbody>
     </table>
-    @* <paginator current-page="currentPage" total-pages="totalPages" page1="page1" page2="page2" page3="page3" current-category="@ViewBag.CurrentCategory.NormalizedName"></paginator> *@
+    <paginator admin="true" current-page="Model.currentPage" total-pages="Model.totalPages" page1="Model.page1" page2="Model.page2" page3="Model.page3"></paginator>
 
     @section Scripts {
         @{

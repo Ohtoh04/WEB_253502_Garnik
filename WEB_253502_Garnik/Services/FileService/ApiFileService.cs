@@ -22,6 +22,7 @@ namespace WEB_253502_Garnik.Services.FileService {
         }
 
         public async Task DeleteFileAsync(string fileUri) {
+            if (fileUri == null) return;
             // Устанавливаем заголовок авторизации
             await SetAuthorizationHeaderAsync();
 

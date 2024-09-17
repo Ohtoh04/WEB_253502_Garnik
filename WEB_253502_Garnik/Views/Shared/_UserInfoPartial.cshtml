@@ -7,8 +7,8 @@
 <div class="container">
     @if (isAuthenticated) {
         <!-- Пользователь вошел в систему -->
-        <a asp-controller="Cart" asp-action="Index" class="navbar-text ms-auto text-light">
-            @await Component.InvokeAsync("UserCartComponent")
+        <a asp-controller="Cart" asp-action="Cart" class="navbar-text ms-auto text-light">
+            @await Component.InvokeAsync("UserCartComponent") 
         </a>
         <div class="dropdown ms-4 nav-color">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">

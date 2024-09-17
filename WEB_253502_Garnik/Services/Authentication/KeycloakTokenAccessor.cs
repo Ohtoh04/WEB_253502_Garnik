@@ -58,9 +58,7 @@ namespace WEB_253502_Garnik.Services.Authentication {
         }
         public async Task SetAuthorizationHeaderAsync(HttpClient httpClient) {
             string token = await GetAccessTokenAsync();
-            httpClient
-            .DefaultRequestHeaders
-            .Authorization = new AuthenticationHeaderValue("bearer", token); ;
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
         }
     }
 }

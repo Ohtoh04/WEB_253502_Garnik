@@ -1,12 +1,11 @@
 using WEB_253502_Garnik.Extensions;
-using WEB_253502_Garnik.Services.CategoryService;
 using WEB_253502_Garnik;
-using System.Configuration;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using WEB_253502_Garnik.HelperClasses;
-
+using Serilog;
+using WEB_253502_Garnik.Diagnostics;
 var builder = WebApplication.CreateBuilder(args);
 
 var keycloakData = builder.Configuration.GetSection("Keycloak").Get<KeycloakData>();
@@ -28,6 +27,8 @@ builder.Services.AddAuthentication(options => {
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession();
 builder.RegisterCustomServices();
 
 // Получение конфигурации из appsettings.json
@@ -35,6 +36,11 @@ var configuration = builder.Configuration;
 
 // Получение значения из раздела UriData
 UriData.ApiUri = configuration.GetSection("UriData:ApiUri").Value;
+Log.Logger = new LoggerConfiguration()
+           .ReadFrom.Configuration(configuration)  // Читаем конфигурацию Serilog из appsettings.json
+           .CreateLogger();
+
+builder.Host.UseSerilog();
 
 var app = builder.Build();
 
@@ -48,11 +54,13 @@ if (!app.Environment.IsDevelopment()) {
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseSession();
 
 app.UseRouting();
 
 app.UseAuthorization();
 
+app.UseMiddleware<LoggingMiddleware>();
 
 
 // Add this to map Razor Pages

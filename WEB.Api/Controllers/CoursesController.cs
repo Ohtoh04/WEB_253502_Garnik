@@ -53,7 +53,7 @@ namespace WEB.Api.Controllers
             try {
                 await _productService.UpdateProductAsync(id, course);
             }
-            catch (Exception ex) {
+            catch (Exception) {
                 return NotFound();
             }
             return Ok();
@@ -73,7 +73,7 @@ namespace WEB.Api.Controllers
             try {
                 await _productService.DeleteProductAsync(id);
             }
-            catch (Exception ex) {
+            catch (Exception) {
                 return NotFound();
             }
 

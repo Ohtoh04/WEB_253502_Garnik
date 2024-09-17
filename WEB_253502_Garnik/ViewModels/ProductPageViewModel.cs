@@ -9,8 +9,9 @@
         public int Page1 { get; set; }
         public int Page2 { get; set; }
         public int Page3 { get; set; }
+        public string ReturnUrl { get; set; }
 
         // Current category
-        public Category? CurrentCategory { get; set; }
+        public string CurrentCategory { get; set; }
     }
 }

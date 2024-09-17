@@ -1,0 +1,46 @@
+﻿@model Cart
+@{
+    ViewData["Title"] = "Cart";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <h1>Cart</h1>
+
+
+
+    <table class="table">
+        <tbody>
+            @foreach (var item in Model.CartItems.Values) {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Count)</td>
+                    <td>
+                        <img src="@item.Item.Image" alt="Course Image" style="width: 100px; height: auto;" />
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.Item.Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Item.Price)</td>
+                    <td>
+                        <a href="@Url.Action("Remove", "Cart", new { ID = item.Item.Id, returnurl = ViewData["ReturnUrl"] })" class="btn btn-sm btn-danger">Remove</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }
+</body>
+</html>

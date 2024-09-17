@@ -20,9 +20,9 @@ var authServer = builder.Configuration.GetSection("AuthServer").Get<AuthServerDa
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, o => {
     // Адрес метаданных конфигурации OpenID
-    o.MetadataAddress = $"{authServer.Host}/realms/{authServer.Realm}/.well-known / openid - configuration";
-// Authority сервера аутентификации
-o.Authority = $"{authServer.Host}/realms/{authServer.Realm}";
+    o.MetadataAddress = $"{authServer.Host}/realms/{authServer.Realm}/.well-known/openid - configuration";
+    // Authority сервера аутентификации
+    o.Authority = $"{authServer.Host}/realms/{authServer.Realm}";
     // Audience для токена JWT
     o.Audience = "account";
     // Запретить HTTPS для использования локальной версии Keycloak

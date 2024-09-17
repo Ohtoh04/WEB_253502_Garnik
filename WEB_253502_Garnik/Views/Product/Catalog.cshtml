@@ -68,7 +68,8 @@
                 </ul>
             </div><!-- выбор категории -->
 
-            @if (!ViewBag.IsAjaxRequest) {
+@*             @if (ViewBag.IsAjaxRequest==false) { *@
+                <div id="hideable">
                 <!-- Колонка с карточками курсов -->
                 <div class="col-md-9">
                     <div class="row">
@@ -84,7 +85,7 @@
                                                 <strong>Price: @course.Price</strong>
                                             </div>
                                         </div>
-                                        <a href="@Url.Action("Add", "Cart", new { ID = course.Id, returnurl = @ViewData["ReturnUrl"] })" class="btn btn-outline-primary" style="width: 100%;">Добавить в корзину</a>
+                                        <a href="@Url.Action("Add", "Cart", new { ID = course.Id, returnurl = returnUrl })" class="btn btn-outline-primary" style="width: 100%;">Добавить в корзину</a>
                                     </div>
                                 </div>
                             }
@@ -142,15 +143,16 @@
                                asp-controller="Product"
                                asp-action="Catalog"
                                asp-route-pageNo="@(currentPage + 1)"
-                               asp-route-category="@ViewBag.CurrentCategory">Next</a>
+                               asp-route-category="@ViewBag.CurrentCategory.NormalizedName">Next</a>
                         </li>
                     </ul>
                 </nav>
-            } else {
-                <p>lorem ipsum</p>
-                @Html.Partial("_ListPartial")
-                <paginator current-page="currentPage" total-pages="totalPages" page1="page1" page2="page2" page3="page3" current-category="@ViewBag.CurrentCategory.NormalizedName"></paginator>
-            }
+                </div>
+            
+
+            <div id="part">
+
+            </div>
         </div>
 
     </div>

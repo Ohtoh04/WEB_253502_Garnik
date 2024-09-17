@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{id}"
 @model WEB_253502_Garnik.Areas.Admin.EditModel
 
 @{
@@ -27,7 +27,7 @@
             <form method="post" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="Course.Id" />
-
+                <input type="hidden" asp-for="Course.Image" />
                 <div class="form-group">
                     <label asp-for="Course.Name" class="control-label"></label>
                     <input asp-for="Course.Name" class="form-control" />

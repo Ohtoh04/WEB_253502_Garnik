@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Razor.TagHelpers;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.CodeAnalysis.Text;
 using System.Text;
@@ -6,10 +7,12 @@ using System.Threading.Tasks;
 
 public class PaginatorTagHelper : TagHelper {
     private readonly LinkGenerator _linkGenerator;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
     // Внедрение LinkGenerator через конструктор
-    public PaginatorTagHelper(LinkGenerator linkGenerator) {
+    public PaginatorTagHelper(LinkGenerator linkGenerator, IHttpContextAccessor httpContextAccessor) {
         _linkGenerator = linkGenerator;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     // Параметры пагинатора
@@ -39,10 +42,9 @@ public class PaginatorTagHelper : TagHelper {
                 controller: "Product",
                 values: new { pageNo = CurrentPage + 1, category = CurrentCategory });
 
-            // Previous button
             sb.Append($@"<li class=""page-item {(CurrentPage == 1 ? "disabled" : "")}"">
-                         <a class=""page-link"" href=""{prevLink}"">Previous</a>
-                     </li>");
+                <a class=""page-link"" href=""{prevLink}"">Previous</a>
+                </li>");
 
             // Page buttons
             if (Page1 != 0) {
@@ -52,8 +54,8 @@ public class PaginatorTagHelper : TagHelper {
                     values: new { pageNo = Page1, category = CurrentCategory });
 
                 sb.Append($@"<li class=""page-item {(Page1 == CurrentPage ? "active" : "")}"">
-                             <a class=""page-link"" href=""{page1Link}"">{Page1}</a>
-                         </li>");
+                    <a class=""page-link"" href=""{page1Link}"">{Page1}</a>
+                    </li>");
             }
 
             if (Page2 != 0) {
@@ -63,8 +65,8 @@ public class PaginatorTagHelper : TagHelper {
                     values: new { pageNo = Page2, category = CurrentCategory });
 
                 sb.Append($@"<li class=""page-item {(Page2 == CurrentPage ? "active" : "")}"">
-                             <a class=""page-link"" href=""{page2Link}"">{Page2}</a>
-                         </li>");
+                    <a class=""page-link"" href=""{page2Link}"">{Page2}</a>
+                    </li>");
             }
 
             if (Page3 != 0) {
@@ -74,23 +76,27 @@ public class PaginatorTagHelper : TagHelper {
                     values: new { pageNo = Page3, category = CurrentCategory });
 
                 sb.Append($@"<li class=""page-item {(Page3 == CurrentPage ? "active" : "")}"">
-                             <a class=""page-link"" href=""{page3Link}"">{Page3}</a>
-                         </li>");
+                    <a class=""page-link"" href=""{page3Link}"">{Page3}</a>
+                    </li>");
             }
 
             // Next button
             sb.Append($@"<li class=""page-item {(CurrentPage >= TotalPages ? "disabled" : "")}"">
-                         <a class=""page-link"" href=""{nextLink}"">Next</a>
-                     </li>");
+                <a class=""page-link"" href=""{nextLink}"">Next</a>
+                </li>");
         } 
         else {
             var prevLink = _linkGenerator.GetPathByPage(
-                page: "/Areas/Admin/Pages/Index",
-                values: new { pageNo = CurrentPage - 1, category = CurrentCategory });
+                _httpContextAccessor.HttpContext,
+                "/Index",
+                null,
+                new { area = "Admin", pageNo = CurrentPage - 1 });
 
             var nextLink = _linkGenerator.GetPathByPage(
-                page: "/Areas/Admin/Pages/Index",
-                values: new { pageNo = CurrentPage + 1, category = CurrentCategory });
+                _httpContextAccessor.HttpContext,
+                "/Index",
+                null,
+                new { area = "Admin", pageNo = CurrentPage + 1 });
 
             // Previous button
             sb.Append($@"<li class=""page-item {(CurrentPage == 1 ? "disabled" : "")}"">
@@ -100,8 +106,9 @@ public class PaginatorTagHelper : TagHelper {
             // Page buttons
             if (Page1 != 0) {
                 var page1Link = _linkGenerator.GetPathByPage(
-                page: "/Areas/Admin/Pages/Index",
-                    values: new { pageNo = Page1, category = CurrentCategory });
+                    _httpContextAccessor.HttpContext,
+                    page: "/Index",
+                    values: new {area = "Admin", pageNo = Page1});
 
                 sb.Append($@"<li class=""page-item {(Page1 == CurrentPage ? "active" : "")}"">
                              <a class=""page-link"" href=""{page1Link}"">{Page1}</a>
@@ -110,8 +117,9 @@ public class PaginatorTagHelper : TagHelper {
 
             if (Page2 != 0) {
                 var page2Link = _linkGenerator.GetPathByPage(
-                page: "/Areas/Admin/Pages/Index",
-                    values: new { pageNo = Page2, category = CurrentCategory });
+                    _httpContextAccessor.HttpContext,
+                    page: "/Index",
+                    values: new { area = "Admin", pageNo = Page2});
 
                 sb.Append($@"<li class=""page-item {(Page2 == CurrentPage ? "active" : "")}"">
                              <a class=""page-link"" href=""{page2Link}"">{Page2}</a>
@@ -120,8 +128,9 @@ public class PaginatorTagHelper : TagHelper {
 
             if (Page3 != 0) {
                 var page3Link = _linkGenerator.GetPathByPage(
-                page: "/Areas/Admin/Pages/Index",
-                    values: new { pageNo = Page3, category = CurrentCategory });
+                    _httpContextAccessor.HttpContext,
+                    page: "/Index",
+                    values: new { area="Admin", pageNo = Page3});
 
                 sb.Append($@"<li class=""page-item {(Page3 == CurrentPage ? "active" : "")}"">
                              <a class=""page-link"" href=""{page3Link}"">{Page3}</a>
