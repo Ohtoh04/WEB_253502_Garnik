@@ -1,0 +1,23 @@
+﻿@page "/courses"
+
+<PageTitle>Courses</PageTitle>
+<CategorySelector/>
+<CoursesList DishSelected="OnDishSelected" />
+<Paginator/>
+<CourseDetails SelectedDish="SelectedDish" />
+
+
+@code {
+	[Inject]
+	public IDataService DataService { get; set; }
+
+	Course SelectedCourse { get; set; }
+
+	protected override async Task OnInitializedAsync() {
+		await DataService.GetProductListAsync(null);
+	}
+
+	void OnDishSelected(int id) {
+		SelectedCourse = DataService.Dishes.FirstOrDefault(d => d.Id == id);
+	}
+}

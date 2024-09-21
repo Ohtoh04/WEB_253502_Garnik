@@ -113,7 +113,6 @@ namespace WEB.Api.Services
             var response = await _httpClient.GetAsync(new Uri(urlString.ToString()));
             if (response.IsSuccessStatusCode) {
                 try {
-                    var resp = await response.Content.ReadAsStringAsync();
 					return await response.Content.ReadFromJsonAsync<ResponseData<ListModel<Course>>>(_serializerOptions);
                 }
                 catch (JsonException ex) {

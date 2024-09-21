@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Cors.Infrastructure;
-using WEB.Api.Services;
+﻿using WEB.Api.Services;
 using WEB_253502_Garnik.HelperClasses;
 using WEB_253502_Garnik.Services.Authentication;
 using WEB_253502_Garnik.Services.Authorization;
 using WEB_253502_Garnik.Services.CartService;
-using WEB_253502_Garnik.Services.CategoryService;
-using WEB_253502_Garnik.Services.CourceService;
 using WEB_253502_Garnik.Services.FileService;
 
 namespace WEB_253502_Garnik.Extensions {
