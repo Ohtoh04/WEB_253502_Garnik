@@ -32,6 +32,7 @@
 
     private async Task SelectCategory(Category category) {
         dataService.SelectedCategory = category;
+        await dataService.GetProductListAsync();
 
     }
 

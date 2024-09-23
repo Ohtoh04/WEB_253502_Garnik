@@ -103,7 +103,7 @@ namespace WEB.BlazorWASM.Services {
 
             var route = new StringBuilder("courses");
             if (SelectedCategory is not null) {
-                route.Append($"{SelectedCategory.NormalizedName}/");
+                route.Append($"/{SelectedCategory.NormalizedName}");
             }
 
             List<KeyValuePair<string, string>> queryData = new();

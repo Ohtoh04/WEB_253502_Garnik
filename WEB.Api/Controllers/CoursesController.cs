@@ -24,7 +24,7 @@ namespace WEB.Api.Controllers
 
         // GET: api/Courses
         [HttpGet("{category?}")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<Course>>> GetCourses(string? category, int pageNo = 1, int pageSize = 3) {
             Console.WriteLine(Request);
             return Ok(await _productService.GetProductListAsync(category, pageNo, pageSize));
@@ -32,7 +32,7 @@ namespace WEB.Api.Controllers
 
         // GET: api/Courses/5
         [HttpGet("{id:int}")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ActionResult<Course>> GetCourse(int id) {
             var course = await _productService.GetProductByIdAsync(id);
 
@@ -69,7 +69,7 @@ namespace WEB.Api.Controllers
 
         // DELETE: api/Courses/5
         [HttpDelete("{id}")]
-        [Authorize(Policy = "admin")] // Требуем политику «admin» для удаления
+        [Authorize(Policy = "admin")] 
         public async Task<IActionResult> DeleteCourse(int id) {
             try {
                 await _productService.DeleteProductAsync(id);

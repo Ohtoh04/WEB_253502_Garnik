@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Cors.Infrastructure;
 using WEB.Api.Services;
 using WEB.Domain.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,11 +27,15 @@ builder.Services.AddCors(options => {
 
 });
 
+builder.Services.AddAuthorization(opt => {
+    opt.AddPolicy("admin", p => p.RequireRole("POWER-USER"));
+});
+
 // Добавить сервис аутентификации
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, o => {
     // Адрес метаданных конфигурации OpenID
-    o.MetadataAddress = $"{authServer.Host}/realms/{authServer.Realm}/.well-known/openid - configuration";
+    o.MetadataAddress = $"{authServer.Host}/realms/{authServer.Realm}/.well-known/openid-configuration";
     // Authority сервера аутентификации
     o.Authority = $"{authServer.Host}/realms/{authServer.Realm}";
     // Audience для токена JWT
@@ -38,11 +43,17 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     // Запретить HTTPS для использования локальной версии Keycloak
     // В рабочем проекте должно быть true
     o.RequireHttpsMetadata = false;
+
+    o.TokenValidationParameters = new TokenValidationParameters {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidAudiences = new[] { "account", "GarnikUiClient", "master-realm", "GarnikWASM" },  // Multiple audiences
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true
+    };
 });
 
-builder.Services.AddAuthorization(opt => {
-    opt.AddPolicy("admin", p => p.RequireRole("POWER-USER"));
-});
+
 
 
 
