@@ -6,4 +6,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <EditorConfigFiles Remove="D:\laby\sppr\WEB_253502_Garnik\WEB.Blazor.SSR\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="D:\laby\sppr\WEB_253502_Garnik\WEB.Blazor.SSR\.editorconfig" />
+  </ItemGroup>
+
 </Project>

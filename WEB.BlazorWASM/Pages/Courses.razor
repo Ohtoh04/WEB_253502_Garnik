@@ -1,23 +1,30 @@
 ﻿@page "/courses"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
 
-<PageTitle>Courses</PageTitle>
-<CategorySelector/>
-<CoursesList DishSelected="OnDishSelected" />
-<Paginator/>
-<CourseDetails SelectedDish="SelectedDish" />
-
+<CategorySelector />
+<CoursesList OnCourseSelected="OnCourseSelected" />
+<Paginator />
+<CourseDetails course="SelectedCourse" />
 
 @code {
-	[Inject]
-	public IDataService DataService { get; set; }
+    [Inject] IDataService DataService { get; set; }
 
-	Course SelectedCourse { get; set; }
+    Course SelectedCourse { get; set; }
 
-	protected override async Task OnInitializedAsync() {
-		await DataService.GetProductListAsync(null);
-	}
+    protected override async Task OnInitializedAsync() {
+        await DataService.GetProductListAsync();
+    }
 
-	void OnDishSelected(int id) {
-		SelectedCourse = DataService.Dishes.FirstOrDefault(d => d.Id == id);
-	}
+    void OnCourseSelected(int id) {
+        SelectedCourse = DataService.Courses.FirstOrDefault(d => d.Id == id);
+    }
+
+    protected override void OnInitialized() {
+        DataService.DataLoaded += StateHasChanged;
+    }
+
+    public void Dispose() {
+        DataService.DataLoaded -= StateHasChanged;
+    }
 }

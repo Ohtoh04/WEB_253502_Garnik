@@ -24,14 +24,15 @@ namespace WEB.Api.Controllers
 
         // GET: api/Courses
         [HttpGet("{category?}")]
-        [AllowAnonymous] // Разрешаем неавторизованный доступ для чтения
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<Course>>> GetCourses(string? category, int pageNo = 1, int pageSize = 3) {
+            Console.WriteLine(Request);
             return Ok(await _productService.GetProductListAsync(category, pageNo, pageSize));
         }
 
         // GET: api/Courses/5
         [HttpGet("{id:int}")]
-        [AllowAnonymous] // Разрешаем неавторизованный доступ для чтения
+        [AllowAnonymous]
         public async Task<ActionResult<Course>> GetCourse(int id) {
             var course = await _productService.GetProductByIdAsync(id);
 

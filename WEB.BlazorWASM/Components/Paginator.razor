@@ -1,0 +1,89 @@
+﻿<nav aria-label="Page navigation">
+    <ul class="pagination">
+        <!-- Previous button -->
+        <li class="page-item @(DataService.CurrentPage == 1 ? "disabled" : "")">
+            <button class="page-link" @onclick="PreviousPage" disabled="@(DataService.CurrentPage == 1)">Previous</button>
+        </li>
+
+        <!-- Page buttons -->
+        @if (page1 != 0) {
+            <li class="page-item @(page1 == DataService.CurrentPage ? "active" : "")">
+                <button class="page-link" @onclick="@(async () => await ChangePage(page1))">@page1</button>
+            </li>
+        }
+
+        @if (page2 != 0) {
+            <li class="page-item @(page2 == DataService.CurrentPage ? "active" : "")">
+                <button class="page-link" @onclick="@(async () => await ChangePage(page2))">@page2</button>
+            </li>
+        }
+
+        @if (page3 != 0) {
+            <li class="page-item @(page3 == DataService.CurrentPage ? "active" : "")">
+                <button class="page-link" @onclick="@(async () => await ChangePage(page3))">@page3</button>
+            </li>
+        }
+
+        <!-- Next button -->
+        <li class="page-item @(DataService.CurrentPage >= DataService.TotalPages ? "disabled" : "")">
+            <button class="page-link" @onclick="NextPage" disabled="@(DataService.CurrentPage >= DataService.TotalPages)">Next</button>
+        </li>
+    </ul>
+</nav>
+
+@code {
+    [Inject]
+    private IDataService DataService { get; set; }
+
+    private int page1;
+    private int page2;
+    private int page3;
+
+    protected override void OnInitialized() {
+        DataService.DataLoaded += CalculatePageNumbers;
+        DataService.DataLoaded += StateHasChanged;
+    }
+
+    private void CalculatePageNumbers() {
+        var currentPage = DataService.CurrentPage;
+        if (currentPage == 1) {
+            page1 = 1;
+            page2 = 2 > DataService.TotalPages ? 0 : 2;
+            page3 = 3 > DataService.TotalPages ? 0 : 3;
+        }
+        else if (currentPage > 1 && currentPage < DataService.TotalPages) {
+            page1 = currentPage - 1;
+            page2 = currentPage;
+            page3 = currentPage + 1;
+        }
+        else if (currentPage == DataService.TotalPages) {
+            page3 = currentPage;
+            page2 = currentPage - 1;
+            page1 = currentPage - 2 > 0 ? currentPage - 2 : 0;
+        }
+    }
+
+    private async Task ChangePage(int pageNumber) {
+        if (pageNumber > 0 && pageNumber <= DataService.TotalPages) {
+            await DataService.GetProductListAsync(pageNumber);
+            CalculatePageNumbers();
+        }
+    }
+
+    private async Task PreviousPage() {
+        if (DataService.CurrentPage > 1) {
+            await ChangePage(DataService.CurrentPage - 1);
+        }
+    }
+
+    private async Task NextPage() {
+        if (DataService.CurrentPage < DataService.TotalPages) {
+            await ChangePage(DataService.CurrentPage + 1);
+        }
+    }
+
+    public void Dispose() {
+        DataService.DataLoaded -= CalculatePageNumbers;
+        DataService.DataLoaded -= StateHasChanged;
+    }
+}

@@ -1,0 +1,45 @@
+﻿<h3>CategorySelector</h3>
+<!-- Колонка с dropdown -->
+<div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            @if (dataService.SelectedCategory == null) {
+                <span>Все</span>
+            } else {
+                <span>@dataService.SelectedCategory.Name</span>
+            }
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" @onclick="() => SelectCategory(null)">Все</a>
+
+        @if(dataService.Categories is not null) {
+            @foreach (var category in dataService.Categories) {
+                <a class="dropdown-item" @onclick="() => SelectCategory(category)">
+                    @category.Name
+                </a>
+            }
+        }
+    </div>
+</div>
+
+
+@code {
+    [Inject]
+    private IDataService dataService { get; set; }
+
+    protected override async Task OnInitializedAsync() {
+        await dataService.GetCategoryListAsync();
+    }
+
+    private async Task SelectCategory(Category category) {
+        dataService.SelectedCategory = category;
+
+    }
+
+    protected override void OnInitialized() {
+        dataService.DataLoaded += StateHasChanged;
+    }
+
+    public void Dispose() {
+        dataService.DataLoaded -= StateHasChanged;
+    }
+}

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Cors.Infrastructure;
 using WEB.Api.Services;
 using WEB.Domain.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -15,6 +16,15 @@ builder.Services.AddControllers();
 string connection = builder.Configuration.GetConnectionString("DefaultConnection") ?? "";
 
 var authServer = builder.Configuration.GetSection("AuthServer").Get<AuthServerData>();
+
+builder.Services.AddCors(options => {
+    options.AddPolicy("AllowSpecificOrigins",
+        policy => policy.WithOrigins("https://localhost:44325", "https://localhost:44344")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials());
+
+});
 
 // Добавить сервис аутентификации
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -56,16 +66,19 @@ if (app.Environment.IsDevelopment()) {
     app.UseSwaggerUI();
 }
 
+
+
+app.UseHttpsRedirection();
+
+app.UseCors("AllowSpecificOrigins");
+
 app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.UseHttpsRedirection();
-
 app.UseStaticFiles();
 
-app.UseAuthorization();
-
 app.MapControllers();
+
 
 app.Run();

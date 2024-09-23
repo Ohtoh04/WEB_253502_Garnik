@@ -1,0 +1,45 @@
+﻿<h3>CoursesList</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (DataService.Courses is not null) {
+            @foreach (var course in DataService.Courses) {
+                <tr>
+                    <td>@course.Name</td>
+                    <td>
+                        <button type="button" class="btn btn-primary" @onclick="() => OnCourseSelectedAsync(course.Id)">About</button>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+@code {
+    [Inject] IDataService DataService { get; set; }
+
+    [Parameter] public EventCallback<int> OnCourseSelected { get; set; }
+
+    private async Task OnCourseSelectedAsync(int id) {
+        if (OnCourseSelected.HasDelegate) {
+            await OnCourseSelected.InvokeAsync(id);
+        }
+    }
+
+    protected override async Task OnInitializedAsync() {
+        await DataService.GetProductListAsync(DataService.CurrentPage);
+    }
+
+    protected override void OnInitialized() {
+        DataService.DataLoaded += StateHasChanged;
+    }
+
+    public void Dispose() {
+        DataService.DataLoaded -= StateHasChanged;
+    }
+}
