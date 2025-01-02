@@ -20,11 +20,10 @@ var authServer = builder.Configuration.GetSection("AuthServer").Get<AuthServerDa
 
 builder.Services.AddCors(options => {
     options.AddPolicy("AllowSpecificOrigins",
-        policy => policy.WithOrigins("https://localhost:44325", "https://localhost:44344")
+        policy => policy.AllowAnyOrigin()
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials());
-
 });
 
 builder.Services.AddAuthorization(opt => {
